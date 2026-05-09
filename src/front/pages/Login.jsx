@@ -1,37 +1,54 @@
 import React, {useState} from "react"
+import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { useNavigate } from "react-router-dom";
 
-export const Signup = () => {
-
+export const Login = () => {
 const navigate = useNavigate()
+const { store, dispatch } = useGlobalReducer()
 
 const [email, setEmail]= useState("")
 const [password, setPassword]= useState("")
-const [username, setUsername]= useState("")
+
 
 const handleSubmit = async (e)=>{
   e.preventDefault()
 
   try{
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const response = await fetch(`${backendUrl}/api/user`, {
+    const response = await fetch(`${backendUrl}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json" 
       },
-      body: JSON.stringify({email, password, username})
+      body: JSON.stringify({email, password})
     } )
+
+
     if(!response.ok){
-      const err = await response.json()
-      alert (err.message || "signup failed" )
+            alert ("login failed, try again" )
       return 
     }
-    alert ("Signup sucessfull, pleace login")
-    navigate("/login")
+
+    const data = await response.json() 
+
+    localStorage.setItem("token", data.token)
+    localStorage.setItem("user", JSON.stringify(data.user)) //si es necesario
+
+    dispatch({
+      type: "login",
+      payload: {
+        token:data.token,
+        user:data.user
+      }
+    })
+
+    navigate("/demo") //debe llevar a una ruta protegida
+    alert ("login sucessfull")
+
 
   } catch (error) {
     console.log(error);
-    alert("signup failed")
+    alert("login failed")
     
   }
 
@@ -42,7 +59,7 @@ const handleSubmit = async (e)=>{
   
   return (
     <div className="container">
-      <h1>Signup</h1>
+      <h1>Login</h1>
 
 
       <form onSubmit={handleSubmit}>
@@ -58,15 +75,9 @@ const handleSubmit = async (e)=>{
             <input type="password" className="form-control" id="inputPassword3" value={password} onChange={(e)=>setPassword(e.target.value)} />
           </div>
         </div>
-        <div className="row mb-3">
-          <label htmlFor="inputusername" className="col-sm-2 col-form-label">UserName</label>
-          <div className="col-sm-10">
-            <input type="text" className="form-control" id="inputusername"  value={username} onChange={(e)=>setUsername(e.target.value)}/>
-          </div>
-        </div>
+        
 
-
-        <button type="submit" className="btn btn-primary">Signup</button>
+        <button type="submit" className="btn btn-primary">Login</button>
       </form>
     </div>
   );

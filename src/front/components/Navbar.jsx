@@ -13,6 +13,11 @@ export const Navbar = () => {
 						<button className="btn btn-primary">Signup</button>
 					</Link>
 				</div>
+				<div className="ml-auto">
+					<Link to="/login">
+						<button className="btn btn-danger">Login</button>
+					</Link>
+				</div>
 			</div>
 		</nav>
 	);

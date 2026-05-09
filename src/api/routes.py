@@ -6,6 +6,10 @@ from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -69,3 +73,38 @@ def create_user():
          #en caso de error se captura la excepcion
         print(f"Error al crear usuario: {error}")
         return jsonify({"msg": "Internal Server Error", "error": str(error)}), 500
+    
+
+    # //////////////////////////////////////////////////////// login 
+
+
+@api.route("/login", methods=["POST"])
+def login():
+    # username = request.json.get("username", None)
+    # password = request.json.get("password", None)
+
+    # if username != "test" or password != "test":
+    #     return jsonify({"msg": "Bad username or password"}), 401
+
+
+    data= request.get_json()
+
+    user= User.query.filter_by(email=data["email"]).first()
+    if not user or not check_password_hash(user.password, data["password"]):
+        return jsonify({"msg": "Invalid email or password"}), 401
+
+
+    access_token = create_access_token(identity=str(user.id))
+    return jsonify({
+        "token": access_token,
+        "user": user.serialize()}), 200
+
+# ////////////////////////////////////////////////////////////// ruta protegida
+
+@api.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
+
