@@ -22,6 +22,7 @@ sqlalchemy = "*"
 cloudinary = "*"
 flask-mail = "*"
 flask-bcrypt = "*"
+resend = "*"
 
 [requires]
 python_version = "3.13"
