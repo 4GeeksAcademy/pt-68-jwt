@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Importamos Link
+import { Link } from "react-router-dom"; 
 
 export const ForgotPassword = () => {
     const [email, setEmail] = useState("");
@@ -8,7 +8,7 @@ export const ForgotPassword = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // ... (tu lógica de fetch al backend)
+
         
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/forgot-password`, {
             method: "POST",

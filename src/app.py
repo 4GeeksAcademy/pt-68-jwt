@@ -13,9 +13,6 @@ from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
 
 
-from dotenv import load_dotenv
-load_dotenv()
-
 from flask_mail import Mail
 import os
 # from models import Person

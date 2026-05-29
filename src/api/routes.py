@@ -181,59 +181,10 @@ def forgot_password():
     return jsonify({"message": "Si el email existe, recibirás un código"}), 200
 
 
-# @api.route('/forgot-password', methods=['POST'])
-# def forgot_password():
-
-#     from app import mail
-#     data = request.get_json()
-#     email = data.get("email")
-#     user = User.query.filter_by(email=email).first()
-
-#     if user:
-#         # Generamos un token que dura 15 minutos
-#         token = create_access_token(identity=str(
-#             user.id), expires_delta=timedelta(minutes=15))
-
-#      # Obtenemos la URL del frontend desde las variables de entorno
-       
-#         frontend_url = os.environ.get("VITE_FRONTEND_URL")
-#         reset_url = f"{frontend_url}/reset-password/{token}"
-
-#         msg = Message("Recupera tu contraseña",
-#                       sender="noreply@tuapp.com",
-#                       recipients=[email])
-#         msg.html = f"""
-#     <h3>Recuperación de contraseña</h3>
-#     <p>Hola, has solicitado cambiar tu contraseña. Haz clic en el siguiente enlace para continuar:</p>
-#     <a href="{reset_url}">Restablecer mi contraseña</a>
-#     <p>Si no solicitaste esto, ignora este correo.</p>
-# """
-
-#         mail.send(msg)
-
-#     # Por seguridad, siempre devolvemos el mismo mensaje aunque el usuario no exista
-#     return jsonify({"message": "Si el correo está registrado, recibirás un enlace"}), 200
 
 
 # //////////////////////////////////////////////////////////////////////// endpoint para actualizar la contraseña
-# @api.route('/reset-password', methods=['POST'])
-# @jwt_required()
-# def reset_password():
-#     data = request.get_json()
-#     new_password = data.get("password")
 
-#     # Recuperamos el ID del usuario del token
-#     user_id = get_jwt_identity()
-#     user = User.query.get(user_id)
-
-#     if user:
-#         user.password = generate_password_hash(new_password)
-#         db.session.commit()
-#         return jsonify({"message": "Contraseña actualizada exitosamente"}), 200
-
-#     return jsonify({"message": "Usuario no encontrado"}), 404
-
-# Ejemplo dentro de tu endpoint /reset-password
 
 
 @api.route('/reset-password', methods=['POST'])
