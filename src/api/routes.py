@@ -14,6 +14,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 import os, cloudinary, cloudinary.uploader
 
+from flask_mail import Message
+
+
+
 
 api = Blueprint('api', __name__)
 
@@ -136,3 +140,23 @@ def upload_image():
         return jsonify({"error": "The image can not be uploaded"}), 400
 
     return jsonify(result["secure_url"]), 200
+
+# /////////////////////////////////////////////////////////// mail 
+
+@api.route('/test-email', methods=['GET'])
+def test_email():
+
+    from app import mail 
+    
+
+    try:
+        msg = Message("Hola desde Flask",
+                      sender="test@tuapp.com",
+                      recipients=["mata.astrid.01@gmail.com"])
+        msg.body = "Si recibes esto en Mailtrap, la configuración es exitosa."
+        mail.send(msg)
+        
+        return "Correo enviado."
+        
+    except Exception as e:
+        return str(e)
