@@ -147,7 +147,7 @@ def test_email():
     try:
         msg = Message("Hola desde Flask",
                       sender="test@tuapp.com",
-                      recipients=["mata.astrid.01@gmail.com"])
+                      recipients=["el email de mailtrap@gmail.com"])
         msg.body = "Si recibes esto en Mailtrap, la configuración es exitosa."
         mail.send(msg)
 
